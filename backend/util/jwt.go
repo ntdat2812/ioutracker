@@ -41,3 +41,22 @@ func (j *JWTHelper) GenerateToken(userId primitive.ObjectID, isRefreshToken bool
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
 	return token.SignedString(key)
 }
+
+func (j *JWTHelper) ParseWithClaims(jwtToken string, isRefreshToken bool) (jwt.MapClaims, error) {
+	claims := jwt.MapClaims{}
+
+	secret := j.Secret
+	if isRefreshToken {
+		secret = j.RefreshSecret
+	}
+
+	token, err := jwt.ParseWithClaims(jwtToken, claims, func(token *jwt.Token) (interface{}, error) {
+		return secret, nil
+	})
+
+	if err != nil || !token.Valid {
+		return nil, err
+	}
+
+	return claims, nil
+}

@@ -2,6 +2,7 @@ package main
 
 import (
 	"iou_tracker/controllers"
+	"iou_tracker/middlewares"
 
 	"github.com/gofiber/fiber/v2"
 )
@@ -18,7 +19,7 @@ func createEndpoints(app *fiber.App) {
 
 	// user group
 	userGroup := api.Group("/users")
-	userGroup.Get("", userController.List)
+	userGroup.Get("", middlewares.JWTMiddleware(), userController.List)
 	userGroup.Post("/register", userController.Register)
 
 }
