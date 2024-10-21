@@ -200,7 +200,6 @@ func (u *userController) RefreshToken(c *fiber.Ctx) error {
 		return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{"error": "Invalid user ID"})
 	}
 
-	// Tạo access token mới
 	newAccessToken, err := u.jwtHelper.GenerateToken(userID, false)
 	if err != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"error": "Could not create new access token"})

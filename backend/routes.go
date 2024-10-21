@@ -11,6 +11,7 @@ func createEndpoints(app *fiber.App) {
 
 	// controllers
 	userController := controllers.NewUserController()
+	debtController := controllers.NewDebtController()
 
 	// api
 	api := app.Group("/api")
@@ -22,4 +23,12 @@ func createEndpoints(app *fiber.App) {
 	userGroup.Get("", middlewares.JWTMiddleware(), userController.List)
 	userGroup.Post("/register", userController.Register)
 
+	// debt group
+	debtGroup := api.Group("/debts", middlewares.JWTMiddleware())
+	debtGroup.Get("", debtController.ListByUser)
+	debtGroup.Post("", debtController.Create)
+	debtGroup.Put("", debtController.Update)
+	debtGroup.Delete("", debtController.Delete)
+	debtGroup.Patch("/mark-as-paid", debtController.MarkAsPaid)
+	debtGroup.Post("/remind", debtController.Remind)
 }
