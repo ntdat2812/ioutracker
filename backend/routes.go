@@ -27,8 +27,7 @@ func createEndpoints(app *fiber.App) {
 	debtGroup := api.Group("/debts", middlewares.JWTMiddleware())
 	debtGroup.Get("", debtController.ListByUser)
 	debtGroup.Post("", debtController.Create)
-	debtGroup.Put("", debtController.Update)
-	debtGroup.Delete("", debtController.Delete)
-	debtGroup.Patch("/mark-as-paid", debtController.MarkAsPaid)
+	debtGroup.Put("/:id", debtController.Update)
+	debtGroup.Delete("/:id", debtController.Delete)
 	debtGroup.Post("/remind", debtController.Remind)
 }
